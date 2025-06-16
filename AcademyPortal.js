@@ -271,6 +271,29 @@ const getMatBonusFromResearch = () => {
   return bonus
 }
 
+const getMatBonusFromOuro = () => {
+  const relic20Bonus = Math.pow(8, playerData.relics.relic20 || 0)
+
+  const ouro5Bonus =
+    relic20Bonus *
+    Math.pow(1 + 0.005 * (ouro.installs[4] || 0), ouro.crew || 0) *
+    (ouro.installs[4] ? shipBonus : 1)
+
+  const gem3Bonus = ouro5Bonus * (playerData.ouro.gemCreationNode3Bonus || 1)
+
+  const meltdownValue = gem3Bonus * (playerData.ouro.meltdown || 1)
+
+  const ouroNerf = meltdownValue * 0.0689
+
+  const knoxBonus = ouroNerf * (playerData.ouro.knoxSowBonus || 1)
+
+  const drillBonus = knoxBonus * (playerData.ouro.extractorDrillBonus || 1)
+
+  const necrumBonus = drillBonus * (playerData.ouro.necrumBonus || 1)
+
+  return necrumBonus
+}
+
 function GetStaticMatBonus() {
   const isOuroEnabled = playerData.ouro.enabled
   const zeus = playerData.fleet.zeus
@@ -298,12 +321,7 @@ function GetStaticMatBonus() {
 
   // ouro install
   if (isOuroEnabled) {
-    staticMatBonus *= Math.pow(8, playerData.relics.relic20 || 0)
-    const ouro5Bonus =
-      Math.pow(1 + 0.005 * (ouro.installs[4] || 0), ouro.crew || 0) *
-      (ouro.installs[4] ? shipBonus : 1)
-    staticMatBonus *= ouro5Bonus
-    console.log('ouro5Bonus', ouro5Bonus)
+    staticMatBonus *= getMatBonusFromOuro()
   }
 
   // shard milestone
@@ -324,14 +342,6 @@ function GetStaticMatBonus() {
 
   // proj
   staticMatBonus *= Math.pow(1.75, playerData.academy.projectLevels[8])
-
-  if (isOuroEnabled) {
-    if (playerData.ouro.gemCreationNode3Bonus > 0)
-      staticMatBonus *= playerData.ouro.gemCreationNode3Bonus
-
-    staticMatBonus *= playerData.ouro.meltdown || 0
-    staticMatBonus *= 0.0689 // ouro mat nerf
-  }
 
   return staticMatBonus
 }
