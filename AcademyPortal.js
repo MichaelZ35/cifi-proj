@@ -272,6 +272,7 @@ const getMatBonusFromResearch = () => {
 }
 
 const getMatBonusFromOuro = () => {
+  const ouro = playerData.fleet.ouro
   const relic20Bonus = Math.pow(8, playerData.relics.relic20 || 0)
 
   const ouro5Bonus =
@@ -297,7 +298,6 @@ const getMatBonusFromOuro = () => {
 function GetStaticMatBonus() {
   const isOuroEnabled = playerData.ouro.enabled
   const zeus = playerData.fleet.zeus
-  const ouro = playerData.fleet.ouro
 
   let staticMatBonus = 1
 
