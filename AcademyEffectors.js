@@ -854,9 +854,14 @@ academyEffectorPortal.pages.default.updateFunction = function (e) {
 
   if (e.target.type === 'number') {
     if (
-      ['meltdown', 'ultimamatbonus', 'creationgemnode3bonus'].indexOf(
-        e.target.id,
-      ) > -1
+      [
+        'meltdown',
+        'ultimamatbonus',
+        'creationgemnode3bonus',
+        'knoxSowBonus',
+        'extractorDrillBonus',
+        'necrumBonus',
+      ].indexOf(e.target.id) > -1
     ) {
       portalPanel.dataLinkage[e.target.id] = parseFloat(e.target.value)
     } else {
