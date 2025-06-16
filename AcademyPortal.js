@@ -272,15 +272,9 @@ const getMatBonusFromResearch = () => {
 }
 
 const getMatBonusFromOuro = () => {
-  const ouro = playerData.fleet.ouro
   const relic20Bonus = Math.pow(8, playerData.relics.relic20 || 0)
 
-  const ouro5Bonus =
-    relic20Bonus *
-    Math.pow(1 + 0.005 * (ouro.installs[4] || 0), ouro.crew || 0) *
-    (ouro.installs[4] ? shipBonus : 1)
-
-  const gem3Bonus = ouro5Bonus * (playerData.ouro.gemCreationNode3Bonus || 1)
+  const gem3Bonus = relic20Bonus * (playerData.ouro.gemCreationNode3Bonus || 1)
 
   const meltdownValue = gem3Bonus * (playerData.ouro.meltdown || 1)
 
@@ -298,6 +292,7 @@ const getMatBonusFromOuro = () => {
 function GetStaticMatBonus() {
   const isOuroEnabled = playerData.ouro.enabled
   const zeus = playerData.fleet.zeus
+  const ouro = playerData.fleet.ouro
 
   let staticMatBonus = 1
 
@@ -321,7 +316,11 @@ function GetStaticMatBonus() {
 
   // ouro install
   if (isOuroEnabled) {
+    const ouro5Bonus =
+      Math.pow(1 + 0.005 * (ouro.installs[4] || 0), ouro.crew || 0) *
+      (ouro.installs[4] ? shipBonus : 1)
     staticMatBonus *= getMatBonusFromOuro()
+    staticMatBonus *= ouro5Bonus
   }
 
   // shard milestone
